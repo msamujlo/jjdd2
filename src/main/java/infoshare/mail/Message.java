@@ -28,6 +28,22 @@ public class Message {
         this.sentDate = sentDate;
     }
 
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Date getSentDate() {
+        return sentDate;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -49,25 +65,37 @@ public class Message {
         private String message;
         private Date sentDate;
 
-        public void from(String from) {
+        public StandardBuilder from(String from) {
             this.from = from;
+            return this;
         }
 
-        public void to(String to) {
+        public StandardBuilder to(String to) {
             this.to = to;
+            return this;
         }
 
-        public void message(String message) {
+        public StandardBuilder message(String message) {
             this.message = message;
+            return this;
         }
 
-        public void sentDate(Date sentDate) {
+        public StandardBuilder sentDate(Date sentDate) {
             this.sentDate = sentDate;
+            return this;
         }
 
         public Message build() {
-            return new Message(from, to, message, sentDate);
+            Message message = new Message(from, to, this.message, sentDate);
+            reset();
+            return message;
         }
+
+        private void reset() {
+            this.from = this.to = this.message = null;
+            this.sentDate = null;
+        }
+
     }
 
     // - throws exception when object is invalid state
@@ -145,7 +173,14 @@ public class Message {
         public Message build() {
             verifyNotNull(this.from);
             verifyNotNull(this.to);
-            return new Message(from, to, message, sentDate);
+            Message message = new Message(from, to, this.message, sentDate);
+            reset();
+            return message;
+        }
+
+        private void reset() {
+            this.from = this.to = this.message = null;
+            this.sentDate = null;
         }
 
     }
